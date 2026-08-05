@@ -1,4 +1,6 @@
 const express = require("express");
+const authRoutes = require("./routes/authRoutes");
+
 
 const app=express();
 app.use(express.json());
@@ -9,3 +11,4 @@ app.get("/", (req,res)=>{
 
 module.exports=app;
 
+app.use("/api/auth", authRoutes);
