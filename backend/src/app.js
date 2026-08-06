@@ -9,6 +9,6 @@ app.get("/", (req,res)=>{
     res.send("CampusCore is running");
 })
 
-module.exports=app;
-
 app.use("/api/auth", authRoutes);
+
+module.exports=app;
