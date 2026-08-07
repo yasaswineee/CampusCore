@@ -26,4 +26,19 @@ const createDepartment = async(req,res) => {
     }
 };
 
-module.exports = {createDepartment};
+const getDepartments = async(req,res) => {
+
+    try{
+        const departments = await Department.find();
+        res.status(200).json({
+            message: "Departments retrieved successfully",
+            departments: departments
+        });
+    }catch(error) {
+        res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
+module.exports = {createDepartment, getDepartments};
