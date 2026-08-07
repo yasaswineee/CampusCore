@@ -16,9 +16,9 @@ const register = async(req,res) =>{
     const newUser = await User.create({name, email, password, role});
 
     res.status(201).json({
-        message: "User registered succesfully",
+        message: "User registered successfully",
         user: {
-            id: newUser._id,
+            id: newUser._id,    
             name: newUser.name,
             email: newUser.email,
             role: newUser.role,
@@ -58,7 +58,7 @@ const login=async(req,res)=>{
         );
 
         res.status(200).json({
-            message:"Login succesfull",
+            message:"Login successful",
             token,
             user:{
                 id:user._id,
