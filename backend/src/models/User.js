@@ -23,6 +23,11 @@ const userSchema = new mongoose.Schema(
       enum: ["admin", "hod", "faculty", "student"],
       required: true,
     },
+    department: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Department",
+      default:null
+    },
   },
   { timestamps: true }
 );

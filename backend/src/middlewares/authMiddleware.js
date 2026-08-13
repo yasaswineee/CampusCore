@@ -7,13 +7,13 @@ const protect = (req,res,next)=>{
     if(!authHeader){
         return res.status(401).json({
             message:"Authorization header is missing"
-        })
+        });
     }
 
     if(!authHeader.startsWith("Bearer ")){
         return res.status(401).json({
             message:"Authorization header is in invalid format"
-        })
+        });
     }
 
     const token=authHeader.split(" ")[1]
@@ -40,6 +40,6 @@ const authorize = (...roles)=>{
     }
 
 
-}
+};
 
 module.exports={protect, authorize};
