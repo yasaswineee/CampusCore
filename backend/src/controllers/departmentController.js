@@ -26,15 +26,42 @@ const createDepartment = async(req,res) => {
     }
 };
 
-const getDepartments = async(req,res) => {
+const getDepartments = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const search = req.query.search || "";
 
-    try{
-        const departments = await Department.find().populate("hod");
+        const skip = (page - 1) * limit;
+
+        const filter = search
+            ? {
+                $or: [
+                    { name: { $regex: search, $options: "i" } },
+                    { code: { $regex: search, $options: "i" } }
+                ]
+            }
+            : {};
+
+        const total = await Department.countDocuments(filter);
+
+        const departments = await Department.find(filter)
+            .populate("hod")
+            .skip(skip)
+            .limit(limit);
+
         res.status(200).json({
             message: "Departments retrieved successfully",
-            departments: departments
+            pagination: {
+                currentPage: page,
+                totalPages: Math.ceil(total / limit),
+                totalItems: total,
+                limit
+            },
+            departments
         });
-    }catch(error) {
+
+    } catch (error) {
         res.status(500).json({
             message: error.message
         });

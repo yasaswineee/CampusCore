@@ -27,41 +27,39 @@ const getSubjects=async(req,res)=>{
         const page=parseInt(req.query.page) || 1;
         const limit=parseInt(req.query.limit) || 10;
         const search=req.query.search || "";
-        const skip=(page - 1)*limit;
 
-        const filter=search
+        const skip = (page-1)*limit;
+
+        const filter = search
         ? {
-                $or: [
-                    { name: { $regex: search, $options: "i" } },
-                    { code: { $regex: search, $options: "i" } }
-                ]
-            }
-            : {};
+            $or : [
+                {name: {$regex: search, $options: "i"}},
+                {code: {$regex: search, $options: "i"}}
+            ]
+        }
+        : {};
 
-        const total=await Department.countDocuments(filter);
+        const total = await Subject.countDocuments(filter);
 
-        const departments = await Department.find(filter)
-            .populate("hod")
+        const subjects = await Subject.find(filter)
+            .populate("departments")
             .skip(skip)
             .limit(limit);
 
-            res.status(200).json({
-            message: "Departments retrieved successfully",
-            pagination: {
+        res.status(200).json({
+            message:"Subjects retrieved successfully",
+            pagination:{
                 currentPage: page,
-                totalPages: Math.ceil(total / limit),
-                totalItems: total,
+                totalPages:Math.ceil(total/limit),
+                totalItems:total,
                 limit
-            },
-            departments
+            },subjects
         });
-
 
     }catch(error){
         res.status(500).json({
-            error:error.message
+            message:error.message
         });
-
     }
 };
 
