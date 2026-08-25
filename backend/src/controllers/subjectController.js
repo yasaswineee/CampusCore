@@ -24,17 +24,44 @@ const createSubject=async(req,res)=>{
 const getSubjects=async(req,res)=>{
 
     try{
-        const subjects=await Subject.find().populate("departments");
+        const page=parseInt(req.query.page) || 1;
+        const limit=parseInt(req.query.limit) || 10;
+        const search=req.query.search || "";
+        const skip=(page - 1)*limit;
 
-        res.status(200).json({
-            message:"Subjects retrieved successfully",
-            subjects:subjects
+        const filter=search
+        ? {
+                $or: [
+                    { name: { $regex: search, $options: "i" } },
+                    { code: { $regex: search, $options: "i" } }
+                ]
+            }
+            : {};
+
+        const total=await Department.countDocuments(filter);
+
+        const departments = await Department.find(filter)
+            .populate("hod")
+            .skip(skip)
+            .limit(limit);
+
+            res.status(200).json({
+            message: "Departments retrieved successfully",
+            pagination: {
+                currentPage: page,
+                totalPages: Math.ceil(total / limit),
+                totalItems: total,
+                limit
+            },
+            departments
         });
+
+
     }catch(error){
-
         res.status(500).json({
-            message:error.message
+            error:error.message
         });
+
     }
 };
 
