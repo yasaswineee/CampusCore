@@ -2,7 +2,7 @@ const express=require("express");
 const router=express.Router();
 
 const{markAttendance, getMyAttendance, getFacultyAttendance, getHodAttendance, getAdminAttendance,getAttendanceSummary,
-    getSubjectAttendanceSummary
+    getSubjectAttendanceSummary,getLowAttendance
 }=require("../controllers/attendanceController");
 const{protect, authorize}=require("../middlewares/authMiddleware")
 
@@ -13,4 +13,6 @@ router.get("/hod",protect,authorize("hod"),getHodAttendance);
 router.get("/admin",protect,authorize("admin"),getAdminAttendance);
 router.get("/student",protect,authorize("student"),getAttendanceSummary);
 router.get("/student",protect,authorize("student"),getSubjectAttendanceSummary);
+router.get("/student",protect,authorize("student"),getLowAttendance);
+
 module.exports=router;

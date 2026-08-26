@@ -430,4 +430,67 @@ const getSubjectAttendanceSummary=async(req,res)=>{
     }
 };
 
-module.exports = { markAttendance, getMyAttendance, getFacultyAttendance, getHodAttendance, getAdminAttendance,getAttendanceSummary,getSubjectAttendanceSummary};
+const getLowAttendance=async(req,res)=>{
+    try{
+        const minimum=Number(req.query.minimum)||75;
+
+        const attendance=await Attendance.find({
+            student:req.user.id
+        }).populate("subject","name code");
+
+         const subjectSummary = {};
+
+        attendance.forEach(record => {
+            const subjectId = record.subject._id.toString();
+
+            if (!subjectSummary[subjectId]) {
+                subjectSummary[subjectId] = {
+                    subject: record.subject,
+                    totalClasses: 0,
+                    present: 0,
+                    absent: 0
+                };
+            }
+
+            subjectSummary[subjectId].totalClasses++;
+
+            if (record.status === "present") {
+                subjectSummary[subjectId].present++;
+            } else if (record.status === "absent") {
+                subjectSummary[subjectId].absent++;
+            }
+        });
+
+        const lowAttendanceSubjects=Object.values(subjectSummary)
+            .map(
+                item=>({
+                    ...item,
+                    percentage:
+                        item.totalClasses===0?0:Number(
+                            (
+                                (item.present/item.totalClasses)*100
+                            ).toFixed(2)
+                        )
+
+                })
+            ).filter(item=>item.percentage<minimum);
+
+        res.status(200).json({
+            message:"Low attendance subjects retrieved successfully",
+            minimum,
+            count:lowAttendanceSubjects.length,
+            lowAttendanceSubjects
+        });
+
+
+    }catch(error){
+        console.log(error)
+        res.status(500).json({
+            message:error.message
+        });
+    }
+};
+
+module.exports = { markAttendance, getMyAttendance, getFacultyAttendance, getHodAttendance, getAdminAttendance,getAttendanceSummary,getSubjectAttendanceSummary,
+    getLowAttendance
+};
