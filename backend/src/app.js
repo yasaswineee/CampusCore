@@ -5,6 +5,7 @@ const subjectRoutes = require("./routes/subjectRoutes");
 const userRoutes = require("./routes/userRoutes");
 const facultyRoutes = require("./routes/facultyRoutes");
 const studentRoutes = require("./routes/studentRoutes");
+const attendanceRoutes=require("./routes/attendanceRoutes");
 
 const app=express();
 app.use(express.json());
@@ -19,5 +20,6 @@ app.use("/api/subjects",subjectRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/faculty", facultyRoutes);
 app.use("/api/student", studentRoutes);
+app.use("/api/attendance",attendanceRoutes);
 
 module.exports=app;
