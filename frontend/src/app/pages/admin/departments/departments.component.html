@@ -1,0 +1,219 @@
+<div class="page">
+
+  <div class="page-header">
+
+    <div>
+      <h1>Departments</h1>
+      <p>Manage college departments</p>
+    </div>
+
+    <button class="add-btn" (click)="openAddForm()">
+      + Add Department
+    </button>
+
+  </div>
+
+
+  <!-- SEARCH + EXPORT -->
+
+  <div class="toolbar">
+
+    <div class="search-box">
+
+      <input
+        type="text"
+        [(ngModel)]="search"
+        placeholder="Search department..."
+        (keyup.enter)="searchDepartments()"
+      >
+
+      <button (click)="searchDepartments()">
+        Search
+      </button>
+
+    </div>
+
+    <button
+      class="export-btn"
+      (click)="exportToExcel()">
+
+      Export to Excel
+
+    </button>
+
+  </div>
+
+
+  <!-- TABLE -->
+
+  <div class="table-container">
+
+    <table>
+
+      <thead>
+
+        <tr>
+          <th>Name</th>
+          <th>Code</th>
+          <th>HOD</th>
+          <th>Actions</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let department of departments">
+
+          <td>
+            {{ department.name }}
+          </td>
+
+          <td>
+            {{ department.code }}
+          </td>
+
+          <td>
+            {{ department.hod?.name || 'Not Assigned' }}
+          </td>
+
+          <td>
+
+            <button
+              class="edit-btn"
+              (click)="openEditForm(department)">
+              Edit
+            </button>
+
+            <button
+              class="delete-btn"
+              (click)="deleteDepartment(department._id)">
+              Delete
+            </button>
+
+          </td>
+
+        </tr>
+
+        <tr *ngIf="departments.length === 0">
+
+          <td colspan="4" class="no-data">
+            No departments found
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+
+  <!-- PAGINATION -->
+
+  <div class="pagination">
+
+    <span>
+      Total: {{ totalItems }}
+    </span>
+
+    <button
+      (click)="previousPage()"
+      [disabled]="currentPage === 1">
+
+      Previous
+
+    </button>
+
+    <span>
+      Page {{ currentPage }} of {{ totalPages }}
+    </span>
+
+    <button
+      (click)="nextPage()"
+      [disabled]="currentPage === totalPages">
+
+      Next
+
+    </button>
+
+  </div>
+
+
+  <!-- POPUP FORM -->
+
+  <div
+    class="modal-background"
+    *ngIf="showForm">
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <h2>
+          {{ isEdit ? 'Edit Department' : 'Add Department' }}
+        </h2>
+
+        <button
+          class="close-btn"
+          (click)="closeForm()">
+
+          ×
+
+        </button>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Department Name</label>
+
+        <input
+          type="text"
+          [(ngModel)]="departmentName"
+          placeholder="Enter department name"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Department Code</label>
+
+        <input
+          type="text"
+          [(ngModel)]="departmentCode"
+          placeholder="Enter department code"
+        >
+
+      </div>
+
+
+      <div class="modal-buttons">
+
+        <button
+          class="cancel-btn"
+          (click)="closeForm()">
+
+          Cancel
+
+        </button>
+
+        <button
+          class="save-btn"
+          (click)="saveDepartment()">
+
+          {{ isEdit ? 'Update' : 'Save' }}
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

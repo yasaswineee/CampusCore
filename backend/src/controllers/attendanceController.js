@@ -64,7 +64,7 @@ const markAttendance=async(req,res)=>{
 
         if(!subjectBelongsToDepartment){
             return res.status(403).json({
-                message:"Subject doesn't belong to any department"
+                message:"Subject doesn't belong to faculty's department"
             });
         }
 
@@ -274,7 +274,7 @@ const getHodAttendance=async(req,res)=>{
         res.status(200).json({
             message:"HOD attendance retrieved successfully",
             currentPage:page,
-            totalPages:Math.ceil(page/limit),
+            totalPages:Math.ceil(total/limit),
             totalItems:total,
             limit,
             attendance

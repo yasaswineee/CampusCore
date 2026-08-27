@@ -1,0 +1,183 @@
+<div class="app-shell">
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      <h2>CampusCore</h2>
+      <span>College Management</span>
+    </div>
+
+    <div class="user-box">
+      <strong>{{ userName }}</strong>
+      <span>{{ userRole }}</span>
+    </div>
+
+    <nav class="nav-menu">
+
+      <!-- ADMIN -->
+
+      <ng-container *ngIf="userRole === 'admin'">
+
+        <a
+          routerLink="/admin/dashboard"
+          routerLinkActive="active">
+          Dashboard
+        </a>
+
+        <a
+          routerLink="/admin/departments"
+          routerLinkActive="active">
+          Departments
+        </a>
+
+        <a
+          routerLink="/admin/subjects"
+          routerLinkActive="active">
+          Subjects
+        </a>
+
+        <a
+          routerLink="/admin/users"
+          routerLinkActive="active">
+          Users
+        </a>
+
+        <a
+          routerLink="/admin/attendance"
+          routerLinkActive="active">
+          Attendance
+        </a>
+
+      </ng-container>
+
+
+      <!-- HOD -->
+
+      <ng-container *ngIf="userRole === 'hod'">
+
+        <a
+          routerLink="/hod/dashboard"
+          routerLinkActive="active">
+          Dashboard
+        </a>
+
+        <a
+          routerLink="/hod/faculty"
+          routerLinkActive="active">
+          Faculty
+        </a>
+
+        <a
+          routerLink="/hod/students"
+          routerLinkActive="active">
+          Students
+        </a>
+
+        <a
+          routerLink="/hod/subjects"
+          routerLinkActive="active">
+          Subjects
+        </a>
+
+        <a
+          routerLink="/hod/attendance"
+          routerLinkActive="active">
+          Attendance
+        </a>
+
+      </ng-container>
+
+
+      <!-- FACULTY -->
+
+      <ng-container *ngIf="userRole === 'faculty'">
+
+        <a
+          routerLink="/faculty/dashboard"
+          routerLinkActive="active">
+          Dashboard
+        </a>
+
+        <a
+          routerLink="/faculty/subjects"
+          routerLinkActive="active">
+          My Subjects
+        </a>
+
+        <a
+          routerLink="/faculty/attendance/mark"
+          routerLinkActive="active">
+          Mark Attendance
+        </a>
+
+        <a
+          routerLink="/faculty/attendance"
+          routerLinkActive="active">
+          Attendance
+        </a>
+
+      </ng-container>
+
+
+      <!-- STUDENT -->
+
+      <ng-container *ngIf="userRole === 'student'">
+
+        <a
+          routerLink="/student/dashboard"
+          routerLinkActive="active">
+          Dashboard
+        </a>
+
+        <a
+          routerLink="/student/subjects"
+          routerLinkActive="active">
+          My Subjects
+        </a>
+
+        <a
+          routerLink="/student/attendance"
+          routerLinkActive="active">
+          My Attendance
+        </a>
+
+      </ng-container>
+
+    </nav>
+
+
+    <button class="logout-btn" (click)="logout()">
+      Logout
+    </button>
+
+  </aside>
+
+
+  <main class="main-content">
+
+    <header class="topbar">
+
+      <h1>CampusCore</h1>
+
+      <div class="user-info">
+
+        <span>{{ userName }}</span>
+
+        <span class="role">
+          {{ userRole }}
+        </span>
+
+      </div>
+
+    </header>
+
+
+    <section class="page-content">
+
+      <router-outlet></router-outlet>
+
+    </section>
+
+  </main>
+
+</div>

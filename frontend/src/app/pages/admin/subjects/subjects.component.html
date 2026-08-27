@@ -1,0 +1,288 @@
+<div class="page">
+
+  <div class="page-header">
+
+    <div>
+      <h1>Subjects</h1>
+      <p>Manage college subjects</p>
+    </div>
+
+    <button
+      class="add-btn"
+      (click)="openAddForm()">
+
+      + Add Subject
+
+    </button>
+
+  </div>
+
+
+  <!-- SEARCH AND EXPORT -->
+
+  <div class="toolbar">
+
+    <div class="search-box">
+
+      <input
+        type="text"
+        [(ngModel)]="search"
+        placeholder="Search subject..."
+        (keyup.enter)="searchSubjects()"
+      >
+
+      <button (click)="searchSubjects()">
+        Search
+      </button>
+
+    </div>
+
+
+    <button
+      class="export-btn"
+      (click)="exportToExcel()">
+
+      Export to Excel
+
+    </button>
+
+  </div>
+
+
+  <!-- TABLE -->
+
+  <div class="table-container">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>Name</th>
+
+          <th>Code</th>
+
+          <th>Departments</th>
+
+          <th>Actions</th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        <tr *ngFor="let subject of subjects">
+
+          <td>
+            {{ subject.name }}
+          </td>
+
+          <td>
+            {{ subject.code }}
+          </td>
+
+          <td>
+
+            <span
+              *ngFor="let department of subject.departments">
+
+              {{ department.name }}
+
+            </span>
+
+          </td>
+
+          <td>
+
+            <button
+              class="edit-btn"
+              (click)="openEditForm(subject)">
+
+              Edit
+
+            </button>
+
+            <button
+              class="delete-btn"
+              (click)="deleteSubject(subject._id)">
+
+              Delete
+
+            </button>
+
+          </td>
+
+        </tr>
+
+
+        <tr *ngIf="subjects.length === 0">
+
+          <td
+            colspan="4"
+            class="no-data">
+
+            No subjects found
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+
+  <!-- PAGINATION -->
+
+  <div class="pagination">
+
+    <span>
+      Total: {{ totalItems }}
+    </span>
+
+    <button
+      (click)="previousPage()"
+      [disabled]="currentPage === 1">
+
+      Previous
+
+    </button>
+
+    <span>
+      Page {{ currentPage }} of {{ totalPages }}
+    </span>
+
+    <button
+      (click)="nextPage()"
+      [disabled]="currentPage >= totalPages">
+
+      Next
+
+    </button>
+
+  </div>
+
+
+  <!-- POPUP -->
+
+  <div
+    class="modal-background"
+    *ngIf="showForm">
+
+    <div class="modal">
+
+
+      <div class="modal-header">
+
+        <h2>
+          {{ isEdit ? 'Edit Subject' : 'Add Subject' }}
+        </h2>
+
+        <button
+          class="close-btn"
+          (click)="closeForm()">
+
+          ×
+
+        </button>
+
+      </div>
+
+
+      <!-- NAME -->
+
+      <div class="form-group">
+
+        <label>Subject Name</label>
+
+        <input
+          type="text"
+          [(ngModel)]="subjectName"
+          placeholder="Enter subject name"
+        >
+
+      </div>
+
+
+      <!-- CODE -->
+
+      <div class="form-group">
+
+        <label>Subject Code</label>
+
+        <input
+          type="text"
+          [(ngModel)]="subjectCode"
+          placeholder="Enter subject code"
+        >
+
+      </div>
+
+
+      <!-- DEPARTMENTS -->
+
+      <div class="form-group">
+
+        <label>Departments</label>
+
+        <div class="department-list">
+
+          <label
+            class="checkbox"
+            *ngFor="let department of departments">
+
+            <input
+              type="checkbox"
+              [value]="department._id"
+              (change)="
+                $event.target.checked
+                  ? selectedDepartments.push(department._id)
+                  : selectedDepartments.splice(
+                      selectedDepartments.indexOf(department._id),
+                      1
+                    )
+              "
+              [checked]="selectedDepartments.includes(department._id)"
+            >
+
+            {{ department.name }}
+
+          </label>
+
+        </div>
+
+      </div>
+
+
+      <!-- BUTTONS -->
+
+      <div class="modal-buttons">
+
+        <button
+          class="cancel-btn"
+          (click)="closeForm()">
+
+          Cancel
+
+        </button>
+
+        <button
+          class="save-btn"
+          (click)="saveSubject()">
+
+          {{ isEdit ? 'Update' : 'Save' }}
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

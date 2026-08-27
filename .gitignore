@@ -1,3 +1,6 @@
+# Node modules
+node_modules/
+
 # Backend
 backend/node_modules/
 backend/.env
@@ -19,3 +22,6 @@ dist/
 # OS
 .DS_Store
 Thumbs.db
+
+/package.json
+/package-lock.json
